@@ -10,6 +10,7 @@ return {
 			"lua-language-server",
 			"pyright",
 			"typescript-language-server",
+			"prettierd",
 		},
 		run_on_start = true,
 	},
