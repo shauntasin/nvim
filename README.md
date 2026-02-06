@@ -9,7 +9,9 @@ Personal Neovim configuration built on LazyVim with a focused, minimal setup.
 
 ## Install
 1. Backup any existing Neovim config.
-2. Place this repo at `~/.config/nvim`.
+2. Place this repo at the appropriate config path:
+   - macOS/Linux: `~/.config/nvim`
+   - Windows: `%LOCALAPPDATA%\nvim`
 3. Start Neovim and let lazy.nvim install plugins.
 
 ## Notes
