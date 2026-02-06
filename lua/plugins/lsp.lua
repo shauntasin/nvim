@@ -4,15 +4,12 @@ return {
 		servers = {
 			omnisharp = {
 				cmd = (function()
-					local ok, registry = pcall(require, "mason-registry")
-					if ok then
-						local pkg = registry.get_package("omnisharp")
-						if pkg and pkg:is_installed() then
-							local bin = vim.fn.has("win32") == 1 and "omnisharp.cmd" or "omnisharp"
-							return { vim.fs.joinpath(pkg:get_install_path(), "bin", bin) }
-						end
+					local bin = vim.fn.has("win32") == 1 and "omnisharp.cmd" or "omnisharp"
+					local path = vim.fn.exepath(bin)
+					if path ~= nil and path ~= "" then
+						return { path }
 					end
-					return { "omnisharp" }
+					return { bin }
 				end)(),
 				settings = {
 					FormattingOptions = {
