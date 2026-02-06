@@ -2,6 +2,7 @@ return {
 	"WhoIsSethDaniel/mason-tool-installer.nvim",
 	opts = {
 		ensure_installed = {
+			"omnisharp",
 			"stylua",
 			"shellcheck",
 			"shfmt",
