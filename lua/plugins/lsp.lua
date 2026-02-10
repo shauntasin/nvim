@@ -2,6 +2,18 @@ return {
 	"neovim/nvim-lspconfig",
 	opts = {
 		servers = {
+			clangd = {
+				root_dir = function(fname)
+					local util = require("lspconfig.util")
+					return util.root_pattern("wscript", "waf", ".git")(fname)
+				end,
+				cmd = {
+					"clangd",
+					"--background-index",
+					"--clang-tidy",
+					"--header-insertion=never",
+				},
+			},
 			fsautocomplete = false,
 			omnisharp = {
 				cmd = (function()

@@ -33,6 +33,25 @@ vim.keymap.set("n", "<leader>lt", function()
 	vim.cmd([[ PlenaryBustedFile % ]])
 end)
 
+local function ardupilot_term(cmd)
+	vim.cmd("belowright split")
+	vim.cmd("resize 14")
+	vim.cmd("terminal " .. cmd)
+	vim.cmd("startinsert")
+end
+
+vim.keymap.set("n", "<leader>ac", function()
+	ardupilot_term("./waf configure --board sitl")
+end, { desc = "ArduPilot configure SITL" })
+
+vim.keymap.set("n", "<leader>ab", function()
+	ardupilot_term("./waf copter")
+end, { desc = "ArduPilot build copter" })
+
+vim.keymap.set("n", "<leader>as", function()
+	ardupilot_term("./waf copter --run")
+end, { desc = "ArduPilot run copter SITL" })
+
 -- greatest remap ever to have yank history
 vim.keymap.set("x", "<leader>p", [["_dP]])
 

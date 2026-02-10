@@ -5,8 +5,9 @@ Personal Neovim configuration built on LazyVim with a focused, minimal setup.
 ## Highlights
 - Base: LazyVim + lazy.nvim
 - Plugins: catppuccin, trouble.nvim, nvim-cmp, telescope.nvim, nvim-lspconfig, nvim-treesitter, lualine.nvim, Comment.nvim, lazydev.nvim, vim-be-good, OmniSharp (cross-platform config)
-- Languages: Lua, Python, C#, TypeScript/TSX, JavaScript, JSON, XML, YAML, Bash, HTML, Markdown, Vimscript
-- Formatting: `prettierd` for JSON/XML via `conform.nvim`
+- Languages: Lua, Python, C/C++, C#, TypeScript/TSX, JavaScript, JSON, XML, YAML, Bash, HTML, Markdown, Vimscript
+- ArduPilot: `clangd` + Treesitter for C/C++, Python support for `wscript`, `.parm`/`.param` detection, and `./waf` terminal keymaps
+- Formatting: `clang-format` (C/C++), `ruff_format`/`black` (Python), `prettierd` (JSON/XML) via `conform.nvim`
 
 ## Install
 1. Backup any existing Neovim config.
@@ -18,3 +19,7 @@ Personal Neovim configuration built on LazyVim with a focused, minimal setup.
 ## Notes
 - Tooling is managed via Mason (see `lua/plugins/mason.lua`).
 - Formatting is configured in `lua/plugins/formatting.lua`.
+- ArduPilot keymaps:
+  - `<leader>ac`: `./waf configure --board sitl`
+  - `<leader>ab`: `./waf copter`
+  - `<leader>as`: `./waf copter --run`
