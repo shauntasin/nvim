@@ -6,6 +6,7 @@ return {
 				json = { "prettierd", "prettier" },
 				jsonc = { "prettierd", "prettier" },
 				json5 = { "prettierd", "prettier" },
+				rust = { "rustfmt" },
 				xml = { "prettierd", "prettier" },
 			},
 		},

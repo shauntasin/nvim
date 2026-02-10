@@ -3,6 +3,8 @@ return {
 	opts = {
 		ensure_installed = {
 			"omnisharp",
+			"rust-analyzer",
+			"rustfmt",
 			"stylua",
 			"shellcheck",
 			"shfmt",

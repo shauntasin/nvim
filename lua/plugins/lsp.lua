@@ -2,6 +2,7 @@ return {
 	"neovim/nvim-lspconfig",
 	opts = {
 		servers = {
+			fsautocomplete = false,
 			omnisharp = {
 				cmd = (function()
 					local bin = vim.fn.has("win32") == 1 and "omnisharp.cmd" or "omnisharp"
@@ -22,6 +23,7 @@ return {
 				},
 			},
 			pyright = {},
+			rust_analyzer = {},
 		},
 	},
 }
