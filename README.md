@@ -7,6 +7,7 @@ Personal Neovim configuration built on LazyVim with a focused, minimal setup.
 - Plugins: catppuccin, trouble.nvim, nvim-cmp, telescope.nvim, nvim-lspconfig, nvim-treesitter, lualine.nvim, Comment.nvim, lazydev.nvim, vim-be-good, OmniSharp (cross-platform config)
 - Languages: Lua, Python, C/C++, C#, TypeScript/TSX, JavaScript, JSON, XML, YAML, Bash, HTML, Markdown, Vimscript
 - ArduPilot: `clangd` + Treesitter for C/C++, Python support for `wscript`, `.parm`/`.param` detection, and `./waf` terminal keymaps
+- PX4: `clangd` root detection for PX4 repos, CMake LSP (`cmake-language-server`), and SITL build/run terminal keymaps
 - Formatting: `clang-format` (C/C++), `ruff_format`/`black` (Python), `prettierd` (JSON/XML) via `conform.nvim`
 
 ## Install
@@ -23,3 +24,6 @@ Personal Neovim configuration built on LazyVim with a focused, minimal setup.
   - `<leader>ac`: `./waf configure --board sitl`
   - `<leader>ab`: `./waf copter`
   - `<leader>as`: `./waf copter --run`
+- PX4 keymaps:
+  - `<leader>pb`: `make px4_sitl_default`
+  - `<leader>ps`: `PX4_SIM_MODEL=iris make px4_sitl_default gazebo`

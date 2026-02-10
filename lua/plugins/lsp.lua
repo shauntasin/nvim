@@ -5,7 +5,14 @@ return {
 			clangd = {
 				root_dir = function(fname)
 					local util = require("lspconfig.util")
-					return util.root_pattern("wscript", "waf", ".git")(fname)
+					return util.root_pattern(
+						"wscript",
+						"waf",
+						".px4board",
+						"platforms",
+						"boards",
+						".git"
+					)(fname)
 				end,
 				cmd = {
 					"clangd",
@@ -14,6 +21,7 @@ return {
 					"--header-insertion=never",
 				},
 			},
+			cmake = {},
 			fsautocomplete = false,
 			omnisharp = {
 				cmd = (function()

@@ -5,6 +5,7 @@ return {
 			"black",
 			"clang-format",
 			"clangd",
+			"cmake-language-server",
 			"codelldb",
 			"omnisharp",
 			"ruff",

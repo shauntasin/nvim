@@ -52,6 +52,14 @@ vim.keymap.set("n", "<leader>as", function()
 	ardupilot_term("./waf copter --run")
 end, { desc = "ArduPilot run copter SITL" })
 
+vim.keymap.set("n", "<leader>pb", function()
+	ardupilot_term("make px4_sitl_default")
+end, { desc = "PX4 build SITL default" })
+
+vim.keymap.set("n", "<leader>ps", function()
+	ardupilot_term("PX4_SIM_MODEL=iris make px4_sitl_default gazebo")
+end, { desc = "PX4 run SITL gazebo (iris)" })
+
 -- greatest remap ever to have yank history
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
