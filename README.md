@@ -4,7 +4,7 @@ Personal Neovim configuration built on LazyVim with a focused, minimal setup.
 
 ## Highlights
 - Base: LazyVim + lazy.nvim
-- Plugins: catppuccin, trouble.nvim, nvim-cmp, telescope.nvim, nvim-lspconfig, nvim-treesitter, lualine.nvim, Comment.nvim, lazydev.nvim, vim-be-good, OmniSharp (cross-platform config)
+- Plugins: catppuccin, trouble.nvim, nvim-cmp, telescope.nvim, nvim-lspconfig, nvim-treesitter, lualine.nvim, Comment.nvim, lazydev.nvim, vim-be-good, lazygit.nvim, OmniSharp (cross-platform config)
 - Languages: Lua, Python, C/C++, C#, TypeScript/TSX, JavaScript, JSON, XML, YAML, Bash, HTML, Markdown, Vimscript
 - ArduPilot: `clangd` + Treesitter for C/C++, Python support for `wscript`, `.parm`/`.param` detection, and `./waf` terminal keymaps
 - PX4: `clangd` root detection for PX4 repos, CMake LSP (`cmake-language-server`), and SITL build/run terminal keymaps
@@ -20,6 +20,23 @@ Personal Neovim configuration built on LazyVim with a focused, minimal setup.
 ## Notes
 - Tooling is managed via Mason (see `lua/plugins/mason.lua`).
 - Formatting is configured in `lua/plugins/formatting.lua`.
+- Git (LazyGit) keymaps:
+  - `<leader>gg`: open LazyGit
+  - `<leader>gF`: current file history in LazyGit
+  - `<leader>gf`: filter LazyGit to current file
+  - `<leader>gC`: open LazyGit config
+- SSH and tunneling commands:
+  - `:SSHTerm user@host`: open SSH terminal in a split
+  - `:TunnelLocal <name> <local_port> <remote_host> <remote_port> [ssh_host]`: local port forward (`-L`)
+  - `:TunnelRemote <name> <remote_port> <local_host> <local_port> [ssh_host]`: remote port forward (`-R`)
+  - `:TunnelSocks <name> <local_port> <ssh_host>`: dynamic SOCKS proxy (`-D`)
+  - `:TunnelStop <name>`: stop a running tunnel by name
+- SSH/tunnel leader shortcuts (command prefill):
+  - `<leader>ss`: `:SSHTerm`
+  - `<leader>sl`: `:TunnelLocal`
+  - `<leader>sr`: `:TunnelRemote`
+  - `<leader>sd`: `:TunnelSocks`
+  - `<leader>sx`: `:TunnelStop`
 - ArduPilot keymaps:
   - `<leader>ac`: `./waf configure --board sitl`
   - `<leader>ab`: `./waf copter`

@@ -104,3 +104,114 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader><leader>", function()
 	vim.cmd("source %")
 end)
+
+-- SSH + tunneling helpers
+local ssh_tunnel_jobs = {}
+
+local function split_term(cmd, opts)
+	opts = opts or {}
+	vim.cmd("belowright split")
+	vim.cmd("resize " .. (opts.height or 14))
+	vim.cmd("terminal " .. cmd)
+	vim.cmd("startinsert")
+end
+
+local function start_ssh_tunnel(name, args)
+	local job = vim.fn.jobstart(args, { detach = false })
+	if job <= 0 then
+		vim.notify("Failed to start tunnel: " .. name, vim.log.levels.ERROR)
+		return
+	end
+
+	ssh_tunnel_jobs[name] = job
+	vim.notify("Tunnel started (" .. name .. ") as job " .. job, vim.log.levels.INFO)
+end
+
+local function stop_ssh_tunnel(name)
+	local job = ssh_tunnel_jobs[name]
+	if not job then
+		vim.notify("No active tunnel named " .. name, vim.log.levels.WARN)
+		return
+	end
+
+	vim.fn.jobstop(job)
+	ssh_tunnel_jobs[name] = nil
+	vim.notify("Tunnel stopped: " .. name, vim.log.levels.INFO)
+end
+
+vim.api.nvim_create_user_command("SSHTerm", function(opts)
+	if opts.args == "" then
+		vim.notify("Usage: :SSHTerm user@host", vim.log.levels.WARN)
+		return
+	end
+	split_term("ssh " .. opts.args)
+end, { nargs = 1, complete = "file" })
+
+vim.api.nvim_create_user_command("TunnelLocal", function(opts)
+	if #opts.fargs < 4 then
+		vim.notify("Usage: :TunnelLocal <name> <local_port> <remote_host> <remote_port> [ssh_host]", vim.log.levels.WARN)
+		return
+	end
+
+	local name = opts.fargs[1]
+	local local_port = opts.fargs[2]
+	local remote_host = opts.fargs[3]
+	local remote_port = opts.fargs[4]
+	local ssh_host = opts.fargs[5] or "localhost"
+
+	start_ssh_tunnel(name, {
+		"ssh",
+		"-N",
+		"-L",
+		("%s:%s:%s"):format(local_port, remote_host, remote_port),
+		ssh_host,
+	})
+end, { nargs = "+" })
+
+vim.api.nvim_create_user_command("TunnelRemote", function(opts)
+	if #opts.fargs < 4 then
+		vim.notify("Usage: :TunnelRemote <name> <remote_port> <local_host> <local_port> [ssh_host]", vim.log.levels.WARN)
+		return
+	end
+
+	local name = opts.fargs[1]
+	local remote_port = opts.fargs[2]
+	local local_host = opts.fargs[3]
+	local local_port = opts.fargs[4]
+	local ssh_host = opts.fargs[5] or "localhost"
+
+	start_ssh_tunnel(name, {
+		"ssh",
+		"-N",
+		"-R",
+		("%s:%s:%s"):format(remote_port, local_host, local_port),
+		ssh_host,
+	})
+end, { nargs = "+" })
+
+vim.api.nvim_create_user_command("TunnelSocks", function(opts)
+	if #opts.fargs < 3 then
+		vim.notify("Usage: :TunnelSocks <name> <local_port> <ssh_host>", vim.log.levels.WARN)
+		return
+	end
+
+	local name = opts.fargs[1]
+	local local_port = opts.fargs[2]
+	local ssh_host = opts.fargs[3]
+
+	start_ssh_tunnel(name, { "ssh", "-N", "-D", local_port, ssh_host })
+end, { nargs = "+" })
+
+vim.api.nvim_create_user_command("TunnelStop", function(opts)
+	if opts.args == "" then
+		vim.notify("Usage: :TunnelStop <name>", vim.log.levels.WARN)
+		return
+	end
+	stop_ssh_tunnel(opts.args)
+end, { nargs = 1 })
+
+vim.keymap.set("n", "<leader>ss", ":SSHTerm ", { desc = "SSH terminal (enter host)" })
+vim.keymap.set("n", "<leader>sl", ":TunnelLocal ", { desc = "Start local tunnel" })
+vim.keymap.set("n", "<leader>sr", ":TunnelRemote ", { desc = "Start remote tunnel" })
+vim.keymap.set("n", "<leader>sd", ":TunnelSocks ", { desc = "Start SOCKS tunnel" })
+vim.keymap.set("n", "<leader>sx", ":TunnelStop ", { desc = "Stop tunnel" })
