@@ -40,6 +40,8 @@ local function ardupilot_term(cmd)
 	vim.cmd("startinsert")
 end
 
+--ardupilot--
+
 vim.keymap.set("n", "<leader>ac", function()
 	ardupilot_term("./waf configure --board sitl")
 end, { desc = "ArduPilot configure SITL" })
@@ -51,6 +53,8 @@ end, { desc = "ArduPilot build copter" })
 vim.keymap.set("n", "<leader>as", function()
 	ardupilot_term("./waf copter --run")
 end, { desc = "ArduPilot run copter SITL" })
+
+--px4--
 
 vim.keymap.set("n", "<leader>pb", function()
 	ardupilot_term("make px4_sitl_default")
@@ -98,5 +102,5 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 -- end)
 
 vim.keymap.set("n", "<leader><leader>", function()
-	vim.cmd("so")
+	vim.cmd("source %")
 end)
