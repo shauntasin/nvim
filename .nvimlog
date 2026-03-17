@@ -1,0 +1,2 @@
+WRN 2026-03-07T12:34:51.733 ?.8776     server_start:199: Failed to start server: operation not permitted: /var/folders/8x/gf29z89d50n80zmhj22fblg40000gn/T/nvim.sameer/aSeWWA/nvim.8776.0
+WRN 2026-03-07T12:35:05.230 ?.9020     server_start:199: Failed to start server: operation not permitted: /var/folders/8x/gf29z89d50n80zmhj22fblg40000gn/T/nvim.sameer/gKMbkH/nvim.9020.0
