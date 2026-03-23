@@ -221,3 +221,31 @@ vim.keymap.set("n", "<leader>sl", ":TunnelLocal ", { desc = "Start local tunnel"
 vim.keymap.set("n", "<leader>sr", ":TunnelRemote ", { desc = "Start remote tunnel" })
 vim.keymap.set("n", "<leader>sd", ":TunnelSocks ", { desc = "Start SOCKS tunnel" })
 vim.keymap.set("n", "<leader>sx", ":TunnelStop ", { desc = "Stop tunnel" })
+
+-- Font zoom (works in GUI clients that support 'guifont': Neovide/Nvim-Qt/Goneovim)
+local function adjust_gui_font(delta)
+	local gf = vim.o.guifont
+	if not gf or gf == "" then
+		vim.notify("No guifont set. In terminal Neovim, use terminal zoom (Ctrl +/-).", vim.log.levels.INFO)
+		return
+	end
+
+	local size = gf:match(":h(%d+%.?%d*)")
+	if not size then
+		vim.notify("Couldn't parse guifont size. Expected format like ':h14'.", vim.log.levels.WARN)
+		return
+	end
+
+	local new_size = math.max(6, tonumber(size) + delta)
+	local new_gf = gf:gsub(":h%d+%.?%d*", ":h" .. tostring(new_size))
+	vim.o.guifont = new_gf
+	vim.notify("Font size: " .. tostring(new_size), vim.log.levels.INFO)
+end
+
+vim.keymap.set("n", "<leader>+", function()
+	adjust_gui_font(1)
+end, { desc = "Increase GUI font" })
+
+vim.keymap.set("n", "<leader>-", function()
+	adjust_gui_font(-1)
+end, { desc = "Decrease GUI font" })
