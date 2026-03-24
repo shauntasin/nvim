@@ -4,11 +4,12 @@ Personal Neovim configuration built on LazyVim with a focused, minimal setup.
 
 ## Highlights
 - Base: LazyVim + lazy.nvim
-- Plugins: catppuccin, trouble.nvim, nvim-cmp, telescope.nvim, nvim-lspconfig, nvim-treesitter, lualine.nvim, Comment.nvim, lazydev.nvim, vim-be-good, lazygit.nvim, OmniSharp (cross-platform config)
-- Languages: Lua, Python, C/C++, C#, TypeScript/TSX, JavaScript, JSON, XML, YAML, Bash, HTML, Markdown, Vimscript
+- Plugins: catppuccin, trouble.nvim, nvim-cmp, telescope.nvim, nvim-lspconfig, nvim-treesitter, lualine.nvim, Comment.nvim, lazydev.nvim, vim-be-good, lazygit.nvim, OmniSharp (cross-platform config), nvim-dap, nvim-dap-ui
+- Languages: Lua, Python, C/C++, C#, F#, TypeScript/TSX, JavaScript, JSON, XML, XAML, AXAML, YAML, Bash, HTML, Markdown, Vimscript
+- .NET / WPF: OmniSharp with Roslyn analyzers, `netcoredbg` + DAP UI, XML-backed XAML/AXAML editing, and `dotnet watch` helpers for hot reload workflows
 - ArduPilot: `clangd` + Treesitter for C/C++, Python support for `wscript`, `.parm`/`.param` detection, and `./waf` terminal keymaps
 - PX4: `clangd` root detection for PX4 repos, CMake LSP (`cmake-language-server`), and SITL build/run terminal keymaps
-- Formatting: `clang-format` (C/C++), `ruff_format`/`black` (Python), `prettierd` (JSON/XML) via `conform.nvim`
+- Formatting: `clang-format` (C/C++), `ruff_format`/`black` (Python), `xmlformatter` (XML/XAML/AXAML), `prettierd` (JSON) via `conform.nvim`
 
 ## Install
 1. Backup any existing Neovim config.
@@ -18,8 +19,21 @@ Personal Neovim configuration built on LazyVim with a focused, minimal setup.
 3. Start Neovim and let lazy.nvim install plugins.
 
 ## Notes
-- Tooling is managed via Mason (see `lua/plugins/mason.lua`).
-- Formatting is configured in `lua/plugins/formatting.lua`.
+- Detailed .NET/WPF usage guide: [docs/dotnet-wpf-guide.md](docs/dotnet-wpf-guide.md)
+- Tooling is managed via Mason (see `lua/plugins/mason.lua` and `lua/plugins/dotnet.lua`).
+- Formatting is configured in `lua/plugins/formatting.lua` and `lua/plugins/dotnet.lua`.
+- .NET / WPF helpers:
+  - `:DotnetRestore`, `:DotnetBuild`, `:DotnetRun`, `:DotnetTest`, `:DotnetWatch`
+  - `<leader>nR`: restore nearest solution/project
+  - `<leader>nb`: build nearest solution/project
+  - `<leader>nr`: run nearest project
+  - `<leader>nt`: test nearest solution/project
+  - `<leader>nw`: `dotnet watch run` for hot reload / XAML iteration
+- DAP keymaps come from LazyVim DAP extra:
+  - `<leader>dc`: continue
+  - `<leader>db`: toggle breakpoint
+  - `<leader>du`: toggle DAP UI
+  - `<leader>dt`: terminate
 - Git (LazyGit) keymaps:
   - `<leader>gg`: open LazyGit
   - `<leader>gF`: current file history in LazyGit

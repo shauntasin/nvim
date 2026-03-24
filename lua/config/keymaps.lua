@@ -64,6 +64,13 @@ vim.keymap.set("n", "<leader>ps", function()
 	ardupilot_term("PX4_SIM_MODEL=iris make px4_sitl_default gazebo")
 end, { desc = "PX4 run SITL gazebo (iris)" })
 
+-- dotnet / WPF
+vim.keymap.set("n", "<leader>nR", "<cmd>DotnetRestore<cr>", { desc = "Dotnet restore" })
+vim.keymap.set("n", "<leader>nb", "<cmd>DotnetBuild<cr>", { desc = "Dotnet build" })
+vim.keymap.set("n", "<leader>nr", "<cmd>DotnetRun<cr>", { desc = "Dotnet run" })
+vim.keymap.set("n", "<leader>nt", "<cmd>DotnetTest<cr>", { desc = "Dotnet test" })
+vim.keymap.set("n", "<leader>nw", "<cmd>DotnetWatch<cr>", { desc = "Dotnet watch run" })
+
 -- greatest remap ever to have yank history
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
