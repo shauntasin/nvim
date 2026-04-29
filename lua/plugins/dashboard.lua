@@ -21,7 +21,6 @@ return {
 				"Stacks    : .NET WPF  |  Python AI/ML  |  C++ / Game Dev",
 				"Tooling   : Omnisharp + Pyright/Ruff + Clangd/CMake",
 			}, "\n")
-			opts.dashboard.sections = opts.dashboard.sections or {}
 			opts.dashboard.preset.keys = vim.list_extend(opts.dashboard.preset.keys or {}, {
 				{ icon = "N ", key = "b", desc = ".NET build", action = ":DotnetBuild" },
 				{ icon = "P ", key = "p", desc = "Python file", action = ":PythonRun" },
