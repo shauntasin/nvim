@@ -1,22 +1,24 @@
 local function add_unique(list, items)
+	list = list or {}
 	for _, item in ipairs(items) do
 		if not vim.tbl_contains(list, item) then
 			table.insert(list, item)
 		end
 	end
+	return list
 end
 
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = function(_, opts)
-			add_unique(opts.ensure_installed, { "c_sharp", "fsharp", "xml" })
+			opts.ensure_installed = add_unique(opts.ensure_installed, { "c_sharp", "fsharp", "xml" })
 		end,
 	},
 	{
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		opts = function(_, opts)
-			add_unique(opts.ensure_installed, { "xmlformatter" })
+			opts.ensure_installed = add_unique(opts.ensure_installed, { "xmlformatter" })
 		end,
 	},
 	{

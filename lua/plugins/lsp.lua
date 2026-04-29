@@ -6,6 +6,12 @@ return {
 				root_dir = function(fname)
 					local util = require("lspconfig.util")
 					return util.root_pattern(
+						"compile_commands.json",
+						"compile_flags.txt",
+						"*.uproject",
+						"*.sln",
+						"*.vcxproj",
+						"CMakeLists.txt",
 						"wscript",
 						"waf",
 						".px4board",
@@ -19,15 +25,27 @@ return {
 					"--background-index",
 					"--clang-tidy",
 					"--header-insertion=never",
+					"--completion-style=detailed",
+					"--fallback-style=Microsoft",
 				},
 			},
 			cmake = {},
+			csharp_ls = {
+				enabled = false,
+			},
 			fsautocomplete = false,
 			omnisharp = {
 				cmd = (function()
-					local bin = vim.fn.has("win32") == 1 and "omnisharp.cmd" or "omnisharp"
-					local path = vim.fn.exepath(bin)
-					local executable = path ~= nil and path ~= "" and path or bin
+					local executable
+					if vim.fn.has("win32") == 1 then
+						local mason = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "packages", "omnisharp", "OmniSharp.cmd")
+						executable = vim.fn.filereadable(mason) == 1 and mason or (vim.fn.exepath("OmniSharp.cmd") or "OmniSharp.cmd")
+					else
+						executable = vim.fn.exepath("omnisharp")
+						if executable == nil or executable == "" then
+							executable = "omnisharp"
+						end
+					end
 
 					return {
 						executable,
@@ -40,9 +58,11 @@ return {
 						"--languageserver",
 					}
 				end)(),
-				root_dir = function(fname)
+				mason = false,
+				root_dir = function(bufnr, on_dir)
 					local util = require("lspconfig.util")
-					return util.root_pattern(
+					local fname = vim.api.nvim_buf_get_name(bufnr)
+					on_dir(util.root_pattern(
 						"*.slnx",
 						"*.sln",
 						"*.csproj",
@@ -50,7 +70,7 @@ return {
 						"*.vbproj",
 						"omnisharp.json",
 						"function.json"
-					)(fname)
+					)(fname))
 				end,
 				enable_roslyn_analyzers = true,
 				organize_imports_on_format = true,
@@ -70,7 +90,26 @@ return {
 					},
 				},
 			},
-			pyright = {},
+			pyright = {
+				settings = {
+					python = {
+						analysis = {
+							autoImportCompletions = true,
+							autoSearchPaths = true,
+							diagnosticMode = "workspace",
+							typeCheckingMode = "basic",
+							useLibraryCodeForTypes = true,
+						},
+					},
+				},
+			},
+			ruff = {
+				init_options = {
+					settings = {
+						lineLength = 100,
+					},
+				},
+			},
 			rust_analyzer = {},
 		},
 	},

@@ -12,7 +12,7 @@ vim.opt.wrap = false
 
 vim.opt.swapfile = false
 vim.opt.backup = false
-local undodir = os.getenv("HOME") .. "/.vim/undodir"
+local undodir = vim.fs.joinpath(vim.fn.stdpath("state"), "undo")
 if vim.fn.isdirectory(undodir) == 0 then
 	vim.fn.mkdir(undodir, "p")
 end

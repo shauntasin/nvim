@@ -71,6 +71,16 @@ vim.keymap.set("n", "<leader>nr", "<cmd>DotnetRun<cr>", { desc = "Dotnet run" })
 vim.keymap.set("n", "<leader>nt", "<cmd>DotnetTest<cr>", { desc = "Dotnet test" })
 vim.keymap.set("n", "<leader>nw", "<cmd>DotnetWatch<cr>", { desc = "Dotnet watch run" })
 
+-- Python AI/ML
+vim.keymap.set("n", "<leader>pr", "<cmd>PythonRun<cr>", { desc = "Python run file" })
+vim.keymap.set("n", "<leader>pt", "<cmd>PythonTest<cr>", { desc = "Python pytest" })
+
+-- C/C++ application and game-dev projects
+vim.keymap.set("n", "<leader>cc", "<cmd>CmakeConfigure<cr>", { desc = "CMake configure" })
+vim.keymap.set("n", "<leader>cb", "<cmd>CmakeBuild<cr>", { desc = "CMake build" })
+vim.keymap.set("n", "<leader>ct", "<cmd>CmakeTest<cr>", { desc = "CMake test" })
+vim.keymap.set("n", "<leader>cr", "<cmd>CppRun<cr>", { desc = "C++ compile/run file" })
+
 -- greatest remap ever to have yank history
 vim.keymap.set("x", "<leader>p", [["_dP]])
 

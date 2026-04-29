@@ -1,14 +1,16 @@
 # custom_nvim
 
-Personal Neovim configuration built on LazyVim with a focused, minimal setup.
+Personal Windows-first Neovim configuration built on LazyVim with a focused C#/.NET,
+Python AI/ML, and C/C++ application workflow.
 
 ## Highlights
 - Base: LazyVim + lazy.nvim
-- Plugins: catppuccin, trouble.nvim, nvim-cmp, telescope.nvim, nvim-lspconfig, nvim-treesitter, lualine.nvim, Comment.nvim, lazydev.nvim, vim-be-good, lazygit.nvim, OmniSharp (cross-platform config), nvim-dap, nvim-dap-ui
-- Languages: Lua, Python, C/C++, C#, F#, TypeScript/TSX, JavaScript, JSON, XML, XAML, AXAML, YAML, Bash, HTML, Markdown, Vimscript
+- Plugins: cyberdream.nvim, trouble.nvim, nvim-cmp, telescope.nvim, nvim-lspconfig, nvim-treesitter, lualine.nvim, Comment.nvim, lazydev.nvim, lazygit.nvim, OmniSharp, nvim-dap, nvim-dap-ui
+- Languages: Lua, Python, C/C++, C#, F#, JSON, XML, XAML, AXAML, TOML, YAML, Bash, HTML, Markdown, Vimscript
+- Startup: LazyVim extras are trimmed to .NET, Python, clangd, Git, JSON, Markdown, TOML, and YAML; Mason tool installation is manual via `:MasonToolsInstall`
 - .NET / WPF: OmniSharp with Roslyn analyzers, `netcoredbg` + DAP UI, XML-backed XAML/AXAML editing, and `dotnet watch` helpers for hot reload workflows
-- ArduPilot: `clangd` + Treesitter for C/C++, Python support for `wscript`, `.parm`/`.param` detection, and `./waf` terminal keymaps
-- PX4: `clangd` root detection for PX4 repos, CMake LSP (`cmake-language-server`), and SITL build/run terminal keymaps
+- Python AI/ML: Pyright + Ruff, `debugpy`, `pytest`, venv-aware LazyVim Python support, and quick file/test runners
+- C/C++ game/application dev: `clangd`, `clangd_extensions.nvim`, CMake LSP, `codelldb`, CMake commands, and Unreal-style root detection via `.uproject`, `.sln`, `.vcxproj`, and `compile_commands.json`
 - Formatting: `clang-format` (C/C++), `ruff_format`/`black` (Python), `xmlformatter` (XML/XAML/AXAML), `prettierd` (JSON) via `conform.nvim`
 
 ## Install
@@ -21,6 +23,7 @@ Personal Neovim configuration built on LazyVim with a focused, minimal setup.
 ## Notes
 - Detailed .NET/WPF usage guide: [docs/dotnet-wpf-guide.md](docs/dotnet-wpf-guide.md)
 - Tooling is managed via Mason (see `lua/plugins/mason.lua` and `lua/plugins/dotnet.lua`).
+- Install or refresh external language tools manually with `:MasonToolsInstall`; it no longer runs on every startup.
 - Formatting is configured in `lua/plugins/formatting.lua` and `lua/plugins/dotnet.lua`.
 - .NET / WPF helpers:
   - `:DotnetRestore`, `:DotnetBuild`, `:DotnetRun`, `:DotnetTest`, `:DotnetWatch`
@@ -29,6 +32,16 @@ Personal Neovim configuration built on LazyVim with a focused, minimal setup.
   - `<leader>nr`: run nearest project
   - `<leader>nt`: test nearest solution/project
   - `<leader>nw`: `dotnet watch run` for hot reload / XAML iteration
+- Python helpers:
+  - `:PythonRun [args...]` / `<leader>pr`: run the current file
+  - `:PythonTest [args...]` / `<leader>pt`: run `pytest`
+  - `<leader>dPt`: debug nearest Python test method
+  - `<leader>dPc`: debug nearest Python test class
+- C/C++ helpers:
+  - `:CmakeConfigure [args...]` / `<leader>cc`: configure `build/` with compile commands
+  - `:CmakeBuild [args...]` / `<leader>cb`: build `build/` Debug in parallel
+  - `:CmakeTest [args...]` / `<leader>ct`: run CTest from `build/`
+  - `:CppRun` / `<leader>cr`: compile and run the current C/C++ file
 - DAP keymaps come from LazyVim DAP extra:
   - `<leader>dc`: continue
   - `<leader>db`: toggle breakpoint
