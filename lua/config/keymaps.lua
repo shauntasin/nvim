@@ -3,7 +3,19 @@
 -- Add any additional keymaps here
 --
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>pv", function()
+	if _G.Snacks and Snacks.explorer then
+		Snacks.explorer({ cwd = vim.fn.getcwd() })
+		return
+	end
+
+	local ok, telescope = pcall(require, "telescope.builtin")
+	if ok then
+		telescope.find_files()
+	else
+		vim.cmd("edit .")
+	end
+end, { desc = "Project view" })
 vim.keymap.set("i", "jj", "<Esc>")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
@@ -12,7 +24,7 @@ vim.keymap.set("n", "nm", function()
 	require("Comment.api").toggle.linewise.current()
 end, { desc = "Toggle comment line" })
 
-vim.api.nvim_set_keymap("n", "<leader>tf", "<Plug>PlenaryTestFile", { noremap = false, silent = false })
+vim.keymap.set("n", "<leader>tf", "<cmd>Neotest run file<cr>", { desc = "Run test file" })
 
 -- vim.keymap.set("n", "J", "mzJ`z")
 -- vim.keymap.set("n", "<C-d>", "<C-d>zz")
@@ -23,20 +35,35 @@ vim.api.nvim_set_keymap("n", "<leader>tf", "<Plug>PlenaryTestFile", { noremap = 
 -- vim.keymap.set("n", "=ap", "ma=ap'a")
 vim.keymap.set("n", "<leader>zig", "<cmd>LspRestart<cr>")
 
+local function optional_call(module, fn)
+	return function()
+		local ok, plugin = pcall(require, module)
+		if not ok then
+			vim.notify(module .. " is not installed", vim.log.levels.WARN)
+			return
+		end
+		plugin[fn]()
+	end
+end
+
 vim.keymap.set("n", "<leader>vwm", function()
-	require("vim-with-me").StartVimWithMe()
-end)
+	optional_call("vim-with-me", "StartVimWithMe")()
+end, { desc = "Start Vim With Me" })
 vim.keymap.set("n", "<leader>svwm", function()
-	require("vim-with-me").StopVimWithMe()
-end)
+	optional_call("vim-with-me", "StopVimWithMe")()
+end, { desc = "Stop Vim With Me" })
 vim.keymap.set("n", "<leader>lt", function()
-	vim.cmd([[ PlenaryBustedFile % ]])
-end)
+	if vim.fn.exists(":PlenaryBustedFile") == 2 then
+		vim.cmd([[PlenaryBustedFile %]])
+	else
+		vim.cmd("Neotest run file")
+	end
+end, { desc = "Run Lua test file" })
 
 local function ardupilot_term(cmd)
 	vim.cmd("belowright split")
 	vim.cmd("resize 14")
-	vim.cmd("terminal " .. cmd)
+	vim.fn.termopen(cmd)
 	vim.cmd("startinsert")
 end
 
@@ -129,7 +156,7 @@ local function split_term(cmd, opts)
 	opts = opts or {}
 	vim.cmd("belowright split")
 	vim.cmd("resize " .. (opts.height or 14))
-	vim.cmd("terminal " .. cmd)
+	vim.fn.termopen(cmd, { cwd = opts.cwd, env = opts.env })
 	vim.cmd("startinsert")
 end
 
@@ -161,7 +188,7 @@ vim.api.nvim_create_user_command("SSHTerm", function(opts)
 		vim.notify("Usage: :SSHTerm user@host", vim.log.levels.WARN)
 		return
 	end
-	split_term("ssh " .. opts.args)
+	split_term({ "ssh", opts.args })
 end, { nargs = 1, complete = "file" })
 
 vim.api.nvim_create_user_command("TunnelLocal", function(opts)
@@ -233,8 +260,8 @@ vim.api.nvim_create_user_command("TunnelStop", function(opts)
 	stop_ssh_tunnel(opts.args)
 end, { nargs = 1 })
 
-vim.keymap.set("n", "<leader>sh", ":SSHTerm ", { desc = "SSH terminal (enter host)" })
-vim.keymap.set("n", "<leader>sl", ":TunnelLocal ", { desc = "Start local tunnel" })
-vim.keymap.set("n", "<leader>sr", ":TunnelRemote ", { desc = "Start remote tunnel" })
-vim.keymap.set("n", "<leader>sd", ":TunnelSocks ", { desc = "Start SOCKS tunnel" })
-vim.keymap.set("n", "<leader>sx", ":TunnelStop ", { desc = "Stop tunnel" })
+vim.keymap.set("n", "<leader>TS", ":SSHTerm ", { desc = "SSH terminal (enter host)" })
+vim.keymap.set("n", "<leader>TL", ":TunnelLocal ", { desc = "Start local tunnel" })
+vim.keymap.set("n", "<leader>TR", ":TunnelRemote ", { desc = "Start remote tunnel" })
+vim.keymap.set("n", "<leader>TD", ":TunnelSocks ", { desc = "Start SOCKS tunnel" })
+vim.keymap.set("n", "<leader>TX", ":TunnelStop ", { desc = "Stop tunnel" })

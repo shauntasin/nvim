@@ -1,3 +1,17 @@
+local function has_exe(name)
+	return vim.fn.executable(name) == 1
+end
+
+local function collect_tools()
+	local tools = {}
+	for _, name in ipairs({ "lazygit", "btop", "btm", "fzf", "rg", "dotnet", "node", "python", "fastfetch" }) do
+		if has_exe(name) then
+			table.insert(tools, name)
+		end
+	end
+	return #tools > 0 and table.concat(tools, "  ") or "none detected"
+end
+
 return {
 	{
 		"folke/snacks.nvim",
@@ -5,28 +19,29 @@ return {
 			local uv = vim.uv or vim.loop
 			local uname = uv.os_uname()
 			local hostname = vim.fn.hostname()
-			local cwd = vim.fn.fnamemodify(vim.uv.cwd() or vim.fn.getcwd(), ":t")
+			local cwd = vim.fn.fnamemodify(uv.cwd() or vim.fn.getcwd(), ":t")
 
 			opts.dashboard = opts.dashboard or {}
 			opts.dashboard.preset = opts.dashboard.preset or {}
 			opts.dashboard.preset.header = table.concat({
-				"╔════════════════════════════════════════════════════════════╗",
-				"║                        SYSTEM INFO                         ║",
-				"╚════════════════════════════════════════════════════════════╝",
+				"============================================================",
+				"                         SYSTEM INFO                         ",
+				"============================================================",
 				"",
 				"Host      : " .. hostname,
 				"System    : " .. uname.sysname .. " / " .. uname.machine,
 				"Release   : " .. uname.release,
 				"Project   : " .. cwd,
-				"Stacks    : .NET WPF  |  Python AI/ML  |  C++ / Game Dev",
-				"Tooling   : Omnisharp + Pyright/Ruff + Clangd/CMake",
+				"Theme     : catppuccin",
+				"TUI tools : " .. collect_tools(),
 			}, "\n")
-			opts.dashboard.preset.keys = vim.list_extend(opts.dashboard.preset.keys or {}, {
-				{ icon = "N ", key = "b", desc = ".NET build", action = ":DotnetBuild" },
-				{ icon = "P ", key = "p", desc = "Python file", action = ":PythonRun" },
-				{ icon = "C ", key = "c", desc = "CMake build", action = ":CmakeBuild" },
-				{ icon = "T ", key = "t", desc = "Tool install", action = ":MasonToolsInstall" },
+
+			local keys = opts.dashboard.preset.keys or {}
+			vim.list_extend(keys, {
+				{ icon = "T ", key = "T", desc = "TUI Launcher", action = ":Tui" },
+				{ icon = "B ", key = "B", desc = "System Monitor", action = ":Tui btop" },
 			})
+			opts.dashboard.preset.keys = keys
 		end,
 	},
 }

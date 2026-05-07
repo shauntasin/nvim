@@ -20,8 +20,20 @@ return {
 			require("dap-python").setup(debugpy)
 		end,
 		keys = {
-			{ "<leader>dPt", function() require("dap-python").test_method() end, desc = "Debug Python test" },
-			{ "<leader>dPc", function() require("dap-python").test_class() end, desc = "Debug Python class" },
+			{
+				"<leader>dPt",
+				function()
+					require("dap-python").test_method()
+				end,
+				desc = "Debug Python test",
+			},
+			{
+				"<leader>dPc",
+				function()
+					require("dap-python").test_class()
+				end,
+				desc = "Debug Python class",
+			},
 		},
 	},
 	{
@@ -69,13 +81,14 @@ return {
 	},
 	{
 		"folke/which-key.nvim",
-		opts = {
-			spec = {
+		opts = function(_, opts)
+			opts.spec = opts.spec or {}
+			vim.list_extend(opts.spec, {
 				{ "<leader>n", group = ".NET / WPF" },
 				{ "<leader>p", group = "Python AI/ML" },
 				{ "<leader>c", group = "C++ / CMake" },
 				{ "<leader>dP", group = "Python debug" },
-			},
-		},
+			})
+		end,
 	},
 }

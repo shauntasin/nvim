@@ -5,7 +5,7 @@ Python AI/ML, and C/C++ application workflow.
 
 ## Highlights
 - Base: LazyVim + lazy.nvim
-- Plugins: cyberdream.nvim, trouble.nvim, nvim-cmp, telescope.nvim, nvim-lspconfig, nvim-treesitter, lualine.nvim, Comment.nvim, lazydev.nvim, lazygit.nvim, OmniSharp, nvim-dap, nvim-dap-ui
+- Plugins: catppuccin, tokyonight.nvim, kanagawa.nvim, cyberdream.nvim, trouble.nvim, nvim-cmp, telescope.nvim, nvim-lspconfig, nvim-treesitter, lualine.nvim, Comment.nvim, lazydev.nvim, lazygit.nvim, OmniSharp, nvim-dap, nvim-dap-ui
 - Languages: Lua, Python, C/C++, C#, F#, JSON, XML, XAML, AXAML, TOML, YAML, Bash, HTML, Markdown, Vimscript
 - Startup: LazyVim extras are trimmed to .NET, Python, clangd, Git, JSON, Markdown, TOML, and YAML; Mason tool installation is manual via `:MasonToolsInstall`
 - .NET / WPF: OmniSharp with Roslyn analyzers, `netcoredbg` + DAP UI, XML-backed XAML/AXAML editing, and `dotnet watch` helpers for hot reload workflows
@@ -52,6 +52,19 @@ Python AI/ML, and C/C++ application workflow.
   - `<leader>gF`: current file history in LazyGit
   - `<leader>gf`: filter LazyGit to current file
   - `<leader>gC`: open LazyGit config
+- Themes:
+  - `:ThemePick` / `<leader>uC`: pick from installed themes
+  - `:ThemeNext` / `<leader>uN`: cycle the curated theme list
+- TUI launcher:
+  - `:Tui [name]` / `<leader>T`: pick an available terminal UI
+  - `<leader>Tg`: LazyGit in a Snacks terminal
+  - `<leader>Tb`: `btop`
+  - `<leader>TB`: `btm`
+  - `<leader>Tf`: `fzf`
+  - `<leader>Tr`: `rg` piped through `fzf`
+  - `<leader>Ts`: PowerShell
+  - `<leader>Tp`: Python REPL
+  - `<leader>Tn`: Node REPL
 - SSH and tunneling commands:
   - `:SSHTerm user@host`: open SSH terminal in a split
   - `:TunnelLocal <name> <local_port> <remote_host> <remote_port> [ssh_host]`: local port forward (`-L`)
@@ -59,11 +72,11 @@ Python AI/ML, and C/C++ application workflow.
   - `:TunnelSocks <name> <local_port> <ssh_host>`: dynamic SOCKS proxy (`-D`)
   - `:TunnelStop <name>`: stop a running tunnel by name
 - SSH/tunnel leader shortcuts (command prefill):
-  - `<leader>ss`: `:SSHTerm`
-  - `<leader>sl`: `:TunnelLocal`
-  - `<leader>sr`: `:TunnelRemote`
-  - `<leader>sd`: `:TunnelSocks`
-  - `<leader>sx`: `:TunnelStop`
+  - `<leader>TS`: `:SSHTerm`
+  - `<leader>TL`: `:TunnelLocal`
+  - `<leader>TR`: `:TunnelRemote`
+  - `<leader>TD`: `:TunnelSocks`
+  - `<leader>TX`: `:TunnelStop`
 - ArduPilot keymaps:
   - `<leader>ac`: `./waf configure --board sitl`
   - `<leader>ab`: `./waf copter`
