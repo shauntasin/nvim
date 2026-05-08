@@ -32,15 +32,10 @@ return {
 				"System    : " .. uname.sysname .. " / " .. uname.machine,
 				"Release   : " .. uname.release,
 				"Project   : " .. cwd,
-				"Theme     : catppuccin",
-				"TUI tools : " .. collect_tools(),
 			}, "\n")
 
 			local keys = opts.dashboard.preset.keys or {}
-			vim.list_extend(keys, {
-				{ icon = "T ", key = "T", desc = "TUI Launcher", action = ":Tui" },
-				{ icon = "B ", key = "B", desc = "System Monitor", action = ":Tui btop" },
-			})
+			vim.list_extend(keys, {})
 			opts.dashboard.preset.keys = keys
 		end,
 	},

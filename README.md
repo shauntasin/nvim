@@ -5,7 +5,7 @@ Python AI/ML, and C/C++ application workflow.
 
 ## Highlights
 - Base: LazyVim + lazy.nvim
-- Plugins: catppuccin, tokyonight.nvim, kanagawa.nvim, cyberdream.nvim, trouble.nvim, nvim-cmp, telescope.nvim, remote-sshfs.nvim, nvim-lspconfig, nvim-treesitter, lualine.nvim, Comment.nvim, lazydev.nvim, lazygit.nvim, OmniSharp, nvim-dap, nvim-dap-ui
+- Plugins: catppuccin, tokyonight.nvim, kanagawa.nvim, cyberdream.nvim, trouble.nvim, nvim-cmp, telescope.nvim, nvim-lspconfig, nvim-treesitter, lualine.nvim, Comment.nvim, lazydev.nvim, lazygit.nvim, OmniSharp, nvim-dap, nvim-dap-ui
 - Languages: Lua, Python, C/C++, C#, F#, JSON, XML, XAML, AXAML, TOML, YAML, Bash, HTML, Markdown, Vimscript
 - Startup: LazyVim extras are trimmed to .NET, Python, clangd, Git, JSON, Markdown, TOML, and YAML; Mason tool installation is manual via `:MasonToolsInstall`
 - .NET / WPF: OmniSharp with Roslyn analyzers, `netcoredbg` + DAP UI, XML-backed XAML/AXAML editing, and `dotnet watch` helpers for hot reload workflows
@@ -62,22 +62,19 @@ Python AI/ML, and C/C++ application workflow.
   - `<leader>TB`: `btm`
   - `<leader>Tf`: `fzf`
   - `<leader>Tr`: `rg` piped through `fzf`
+  - `<leader>Th`: `fastfetch` status terminal
   - `<leader>Ts`: PowerShell
   - `<leader>Tp`: Python REPL
   - `<leader>Tn`: Node REPL
-- Remote SSHFS editing:
-  - Requires local `sshfs` (`WinFsp` + `SSHFS-Win` on Windows) for mounted remote editing.
-  - `:RemoteSSHFSConnect`: pick a host from `~/.ssh/config` and mount it with SSHFS
-  - `:RemoteSSHFSConnect user@host:/path -p 22`: connect directly to a host/path
-  - `:RemoteSSHFSDisconnect`: unmount the active remote host
-  - `:RemoteSSHFSEdit`: edit SSH config entries
-  - `:RemoteSSHFSFindFiles`: find files on the connected remote host
-  - `:RemoteSSHFSLiveGrep`: grep on the connected remote host
-  - `<leader>rc`: connect
-  - `<leader>rd`: disconnect
-  - `<leader>re`: edit SSH config
-  - `<leader>rf`: remote find files
-  - `<leader>rG`: remote live grep
+- Remote SSH terminal:
+  - `:Ssh user@host -p 22`: open a plain SSH session in a Snacks terminal
+  - `:Ssh`: prompt for a target such as `user@host` or `user@host -p 2222`
+  - `:SshHost`: pick a host from `~/.ssh/config`
+  - `:RemoteSSHStatus`: check whether `ssh` and parsed SSH config hosts are available
+  - `<leader>rc`: pick a configured host, or prompt when no host config exists
+  - `<leader>rs`: prompt for any SSH target
+  - `<leader>rh`: pick from `~/.ssh/config`
+  - `<leader>rS`: SSH status
 - Netrw is enabled; `:Ex`, `:Sex`, `:Vex`, and paths like `scp://user@host//path/file` are available.
 - ArduPilot keymaps:
   - `<leader>ac`: `./waf configure --board sitl`

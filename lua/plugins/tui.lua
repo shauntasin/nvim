@@ -54,6 +54,21 @@ local apps = {
 		cmd = { "fastfetch" },
 		requires = { "fastfetch" },
 		keep_open = true,
+		always_show = true,
+		fallback_cmd = function()
+			local shell = shell_cmd()
+			return {
+				shell[1],
+				"-NoLogo",
+				"-NoExit",
+				"-Command",
+				table.concat({
+					"Write-Host 'fastfetch is not installed or not on PATH.' -ForegroundColor Yellow",
+					"Write-Host 'Install it with: winget install --id fastfetch-cli.fastfetch --scope user'",
+					"Write-Host 'Then restart Neovim or reopen this terminal.'",
+				}, "; "),
+			}
+		end,
 	},
 	powershell = {
 		label = "PowerShell",
@@ -100,7 +115,7 @@ end
 local function available()
 	local names = {}
 	for name, app in pairs(apps) do
-		if not missing(app) then
+		if app.always_show or not missing(app) then
 			table.insert(names, name)
 		end
 	end
@@ -125,6 +140,22 @@ local function launch(name)
 
 	local miss = missing(app)
 	if miss then
+		if app.fallback_cmd then
+			Snacks.terminal.toggle(command({ cmd = app.fallback_cmd, keep_open = true }), {
+				cwd = root(),
+				interactive = true,
+				auto_close = false,
+				win = {
+					position = "float",
+					width = 0.92,
+					height = 0.9,
+					border = "rounded",
+					title = " " .. app.label .. " ",
+					title_pos = "center",
+				},
+			})
+			return
+		end
 		vim.notify("Missing TUI executable: " .. miss, vim.log.levels.WARN)
 		return
 	end
