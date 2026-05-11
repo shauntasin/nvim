@@ -3,7 +3,19 @@
 -- Add any additional keymaps here
 --
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>pv", function()
+	if _G.Snacks and Snacks.explorer then
+		Snacks.explorer({ cwd = vim.fn.getcwd() })
+		return
+	end
+
+	local ok, telescope = pcall(require, "telescope.builtin")
+	if ok then
+		telescope.find_files()
+	else
+		vim.cmd("edit .")
+	end
+end, { desc = "Project view" })
 vim.keymap.set("i", "jj", "<Esc>")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
@@ -12,7 +24,7 @@ vim.keymap.set("n", "nm", function()
 	require("Comment.api").toggle.linewise.current()
 end, { desc = "Toggle comment line" })
 
-vim.api.nvim_set_keymap("n", "<leader>tf", "<Plug>PlenaryTestFile", { noremap = false, silent = false })
+vim.keymap.set("n", "<leader>tf", "<cmd>Neotest run file<cr>", { desc = "Run test file" })
 
 -- vim.keymap.set("n", "J", "mzJ`z")
 -- vim.keymap.set("n", "<C-d>", "<C-d>zz")
@@ -23,20 +35,35 @@ vim.api.nvim_set_keymap("n", "<leader>tf", "<Plug>PlenaryTestFile", { noremap = 
 -- vim.keymap.set("n", "=ap", "ma=ap'a")
 vim.keymap.set("n", "<leader>zig", "<cmd>LspRestart<cr>")
 
+local function optional_call(module, fn)
+	return function()
+		local ok, plugin = pcall(require, module)
+		if not ok then
+			vim.notify(module .. " is not installed", vim.log.levels.WARN)
+			return
+		end
+		plugin[fn]()
+	end
+end
+
 vim.keymap.set("n", "<leader>vwm", function()
-	require("vim-with-me").StartVimWithMe()
-end)
+	optional_call("vim-with-me", "StartVimWithMe")()
+end, { desc = "Start Vim With Me" })
 vim.keymap.set("n", "<leader>svwm", function()
-	require("vim-with-me").StopVimWithMe()
-end)
+	optional_call("vim-with-me", "StopVimWithMe")()
+end, { desc = "Stop Vim With Me" })
 vim.keymap.set("n", "<leader>lt", function()
-	vim.cmd([[ PlenaryBustedFile % ]])
-end)
+	if vim.fn.exists(":PlenaryBustedFile") == 2 then
+		vim.cmd([[PlenaryBustedFile %]])
+	else
+		vim.cmd("Neotest run file")
+	end
+end, { desc = "Run Lua test file" })
 
 local function ardupilot_term(cmd)
 	vim.cmd("belowright split")
 	vim.cmd("resize 14")
-	vim.cmd("terminal " .. cmd)
+	vim.fn.termopen(cmd)
 	vim.cmd("startinsert")
 end
 
@@ -64,6 +91,16 @@ vim.keymap.set("n", "<leader>ps", function()
 	ardupilot_term("PX4_SIM_MODEL=iris make px4_sitl_default gazebo")
 end, { desc = "PX4 run SITL gazebo (iris)" })
 
+-- Python AI/ML
+vim.keymap.set("n", "<leader>pr", "<cmd>PythonRun<cr>", { desc = "Python run file" })
+vim.keymap.set("n", "<leader>pt", "<cmd>PythonTest<cr>", { desc = "Python pytest" })
+
+-- C/C++ application and game-dev projects
+vim.keymap.set("n", "<leader>cc", "<cmd>CmakeConfigure<cr>", { desc = "CMake configure" })
+vim.keymap.set("n", "<leader>cb", "<cmd>CmakeBuild<cr>", { desc = "CMake build" })
+vim.keymap.set("n", "<leader>ct", "<cmd>CmakeTest<cr>", { desc = "CMake test" })
+vim.keymap.set("n", "<leader>cr", "<cmd>CppRun<cr>", { desc = "C++ compile/run file" })
+
 -- greatest remap ever to have yank history
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
@@ -77,9 +114,6 @@ vim.keymap.set({ "n", "v" }, "<leader>d", '"_d')
 vim.keymap.set("i", "<C-c>", "<Esc>")
 
 vim.keymap.set("n", "Q", "<nop>")
--- vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
--- vim.keymap.set("n", "<M-h>", "<cmd>silent !tmux-sessionizer -s 0 --vsplit<CR>")
--- vim.keymap.set("n", "<M-H>", "<cmd>silent !tmux neww tmux-sessionizer -s 0<CR>")
 
 -- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 -- vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
@@ -107,14 +141,6 @@ end)
 
 -- SSH + tunneling helpers
 local ssh_tunnel_jobs = {}
-
-local function split_term(cmd, opts)
-	opts = opts or {}
-	vim.cmd("belowright split")
-	vim.cmd("resize " .. (opts.height or 14))
-	vim.cmd("terminal " .. cmd)
-	vim.cmd("startinsert")
-end
 
 local function start_ssh_tunnel(name, args)
 	local job = vim.fn.jobstart(args, { detach = false })
@@ -144,7 +170,10 @@ vim.api.nvim_create_user_command("SSHTerm", function(opts)
 		vim.notify("Usage: :SSHTerm user@host", vim.log.levels.WARN)
 		return
 	end
-	split_term("ssh " .. opts.args)
+	vim.cmd("belowright split")
+	vim.cmd("resize 14")
+	vim.fn.termopen("ssh " .. opts.args)
+	vim.cmd("startinsert")
 end, { nargs = 1, complete = "file" })
 
 vim.api.nvim_create_user_command("TunnelLocal", function(opts)
@@ -221,31 +250,3 @@ vim.keymap.set("n", "<leader>sl", ":TunnelLocal ", { desc = "Start local tunnel"
 vim.keymap.set("n", "<leader>sr", ":TunnelRemote ", { desc = "Start remote tunnel" })
 vim.keymap.set("n", "<leader>sd", ":TunnelSocks ", { desc = "Start SOCKS tunnel" })
 vim.keymap.set("n", "<leader>sx", ":TunnelStop ", { desc = "Stop tunnel" })
-
--- Font zoom (works in GUI clients that support 'guifont': Neovide/Nvim-Qt/Goneovim)
-local function adjust_gui_font(delta)
-	local gf = vim.o.guifont
-	if not gf or gf == "" then
-		vim.notify("No guifont set. In terminal Neovim, use terminal zoom (Ctrl +/-).", vim.log.levels.INFO)
-		return
-	end
-
-	local size = gf:match(":h(%d+%.?%d*)")
-	if not size then
-		vim.notify("Couldn't parse guifont size. Expected format like ':h14'.", vim.log.levels.WARN)
-		return
-	end
-
-	local new_size = math.max(6, tonumber(size) + delta)
-	local new_gf = gf:gsub(":h%d+%.?%d*", ":h" .. tostring(new_size))
-	vim.o.guifont = new_gf
-	vim.notify("Font size: " .. tostring(new_size), vim.log.levels.INFO)
-end
-
-vim.keymap.set("n", "<leader>+", function()
-	adjust_gui_font(1)
-end, { desc = "Increase GUI font" })
-
-vim.keymap.set("n", "<leader>-", function()
-	adjust_gui_font(-1)
-end, { desc = "Decrease GUI font" })

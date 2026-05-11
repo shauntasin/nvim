@@ -19,4 +19,28 @@ require("lazy").setup({
 		{ "LazyVim/LazyVim", import = "lazyvim.plugins" },
 		{ import = "plugins" },
 	},
+	checker = { enabled = false },
+	change_detection = { notify = false },
+	performance = {
+		cache = { enabled = true },
+		rtp = {
+			disabled_plugins = {
+				"gzip",
+				"getscript",
+				"getscriptPlugin",
+				"logipat",
+				"matchit",
+				"matchparen",
+				"rplugin",
+				"rrhelper",
+				"spellfile_plugin",
+				"tarPlugin",
+				"tohtml",
+				"tutor",
+				"vimball",
+				"vimballPlugin",
+				"zipPlugin",
+			},
+		},
+	},
 })
