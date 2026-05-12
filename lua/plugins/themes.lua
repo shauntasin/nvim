@@ -1,16 +1,61 @@
 local themes = {
-	"catppuccin",
-	"tokyonight-night",
-	"tokyonight-moon",
-	"kanagawa-wave",
-	"kanagawa-dragon",
-	"cyberdream",
-	"modus_vivendi",
-	"modus_operandi",
-	"rose-pine",
+	{ name = "catppuccin", background = "light" },
+	{ name = "catppuccin-latte", background = "light" },
+	{ name = "tokyonight-night", background = "dark" },
+	{ name = "tokyonight-moon", background = "dark" },
+	{ name = "tokyonight-day", background = "light" },
+	{ name = "kanagawa-wave", background = "dark" },
+	{ name = "kanagawa-dragon", background = "dark" },
+	{ name = "kanagawa-lotus", background = "light" },
+	{ name = "cyberdream", background = "dark" },
+	{ name = "modus_vivendi", background = "dark" },
+	{ name = "modus_operandi", background = "light" },
+	{ name = "rose-pine", background = "dark" },
+	{ name = "rose-pine-dawn", background = "light" },
+	{ name = "dayfox", background = "light" },
+	{ name = "dawnfox", background = "light" },
+	{ name = "github_light", background = "light" },
+	{ name = "github_light_default", background = "light" },
+	{ name = "github_light_high_contrast", background = "light" },
+	{ name = "github_light_colorblind", background = "light" },
+	{ name = "github_light_tritanopia", background = "light" },
+	{
+		name = "everforest",
+		background = "light",
+		before = function()
+			vim.g.everforest_background = "medium"
+			vim.g.everforest_better_performance = 1
+		end,
+	},
+	{
+		name = "onedark",
+		background = "light",
+		before = function()
+			require("lazy").load({ plugins = { "onedark.nvim" } })
+			require("onedark").setup({ style = "light" })
+		end,
+	},
 }
 
-local function apply_theme(name)
+local function theme_name(theme)
+	return type(theme) == "table" and theme.name or theme
+end
+
+local function apply_theme(theme)
+	local name = theme_name(theme)
+	if type(theme) == "table" then
+		if theme.background then
+			vim.o.background = theme.background
+		end
+		if theme.before then
+			local ok, err = pcall(theme.before)
+			if not ok then
+				vim.notify("Failed to prepare colorscheme " .. name .. ": " .. err, vim.log.levels.ERROR)
+				return
+			end
+		end
+	end
+
 	local ok, err = pcall(vim.cmd.colorscheme, name)
 	if not ok then
 		vim.notify("Failed to load colorscheme " .. name .. ": " .. err, vim.log.levels.ERROR)
@@ -18,7 +63,10 @@ local function apply_theme(name)
 end
 
 local function pick_theme()
-	vim.ui.select(themes, { prompt = "Colorscheme" }, function(choice)
+	vim.ui.select(themes, {
+		prompt = "Colorscheme",
+		format_item = theme_name,
+	}, function(choice)
 		if choice then
 			apply_theme(choice)
 		end
@@ -28,8 +76,8 @@ end
 local function next_theme()
 	local current = vim.g.colors_name
 	local index = 0
-	for i, name in ipairs(themes) do
-		if name == current then
+	for i, theme in ipairs(themes) do
+		if theme_name(theme) == current then
 			index = i
 			break
 		end

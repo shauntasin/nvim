@@ -34,4 +34,14 @@ return {
 	{ "rebelot/kanagawa.nvim", lazy = true },
 	{ "rose-pine/neovim", lazy = true },
 	{ "scottmckendry/cyberdream.nvim", lazy = true },
+	{ "EdenEast/nightfox.nvim", lazy = true },
+	{ "projekt0n/github-nvim-theme", name = "github-theme", lazy = true },
+	{ "sainnhe/everforest", lazy = true },
+	{
+		"navarasu/onedark.nvim",
+		lazy = true,
+		opts = {
+			style = "light",
+		},
+	},
 }
