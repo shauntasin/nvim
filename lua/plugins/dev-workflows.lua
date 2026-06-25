@@ -47,7 +47,7 @@ return {
 	{
 		"mfussenegger/nvim-dap",
 		optional = true,
-		opts = function()
+		config = function()
 			local dap = require("dap")
 			local codelldb = existing_path(mason_package_path("codelldb", "extension", "adapter", "codelldb"))
 				or vim.fn.exepath("codelldb")

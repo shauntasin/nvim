@@ -2,7 +2,7 @@ return {
 	{
 		"LazyVim/LazyVim",
 		opts = {
-			colorscheme = "modus_vivendi",
+			colorscheme = "modus_operandi",
 		},
 	},
 	{
@@ -11,7 +11,7 @@ return {
 		lazy = true,
 		priority = 1000,
 		opts = {
-			flavour = "mocha",
+			flavour = "latte",
 			background = {
 				light = "latte",
 				dark = "mocha",

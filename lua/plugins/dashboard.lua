@@ -32,7 +32,6 @@ return {
 				"System    : " .. uname.sysname .. " / " .. uname.machine,
 				"Release   : " .. uname.release,
 				"Project   : " .. cwd,
-				"Tools     : " .. collect_tools(),
 			}, "\n")
 
 			local keys = opts.dashboard.preset.keys or {}
