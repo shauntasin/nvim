@@ -1,0 +1,12 @@
+# Neovim runtime/log files
+nvim.log
+*.log
+
+# Swap, backup, and undo files
+*.swp
+*.swo
+*~
+.netrwhist
+
+# OS files
+.DS_Store
