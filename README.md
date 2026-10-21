@@ -2,6 +2,21 @@
 
 Personal Neovim configuration built on LazyVim with a focused, minimal setup.
 
+## PDFs
+
+Open `nvim file.pdf`, select a PDF in the explorer, or use `:PdfText path/to/file.pdf`.
+PDFs open as read-only extracted text: use `/` to search and normal Vim motions/yanks.
+Poppler is required (`brew install poppler`), and is already installed on this Mac.
+
+- `:PdfView` or `<leader>pi` in a PDF: show page images in a right split in Ghostty/Kitty.
+- `]p` / `[p` or PageDown / PageUp in the image split: next / previous page.
+- `q` in the image split: close the preview.
+- `:PdfOpen` or `<leader>po`: open the original PDF in the system viewer (Preview on macOS).
+- `:PdfText`: return to searchable text from a page preview.
+
+Scanned PDFs require the page view or system viewer; text extraction does not perform OCR.
+Graphical viewing uses Snacks and Poppler; ImageMagick must also be available.
+
 ## Highlights
 - Base: LazyVim + lazy.nvim
 - Plugins: catppuccin, trouble.nvim, nvim-cmp, telescope.nvim, nvim-lspconfig, nvim-treesitter, lualine.nvim, Comment.nvim, lazydev.nvim, vim-be-good, lazygit.nvim, OmniSharp (cross-platform config)
