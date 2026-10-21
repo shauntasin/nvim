@@ -10,7 +10,8 @@ return {
 				json5 = { "prettierd", "prettier" },
 				python = { "ruff_format", "black" },
 				rust = { "rustfmt" },
-				xml = { "prettierd", "prettier" },
+				-- Prettier has no XML parser here; use LemMinX through LSP fallback.
+				xml = {},
 			},
 		},
 	},

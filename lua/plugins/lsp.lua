@@ -3,20 +3,23 @@ return {
 	opts = {
 		servers = {
 			clangd = {
-				root_dir = function(fname)
+				root_dir = function(bufnr, on_dir)
 					local util = require("lspconfig.util")
-					return util.root_pattern(
-						"compile_commands.json",
-						"compile_flags.txt",
-						"*.uproject",
-						"CMakeLists.txt",
-						"wscript",
-						"waf",
-						".px4board",
-						"platforms",
-						"boards",
-						".git"
-					)(fname)
+					local fname = vim.api.nvim_buf_get_name(bufnr)
+					on_dir(
+						util.root_pattern(
+							"compile_commands.json",
+							"compile_flags.txt",
+							"*.uproject",
+							"CMakeLists.txt",
+							"wscript",
+							"waf",
+							".px4board",
+							"platforms",
+							"boards",
+							".git"
+						)(fname)
+					)
 				end,
 				cmd = {
 					"clangd",
@@ -53,15 +56,17 @@ return {
 				root_dir = function(bufnr, on_dir)
 					local util = require("lspconfig.util")
 					local fname = vim.api.nvim_buf_get_name(bufnr)
-					on_dir(util.root_pattern(
-						"*.slnx",
-						"*.sln",
-						"*.csproj",
-						"*.fsproj",
-						"*.vbproj",
-						"omnisharp.json",
-						"function.json"
-					)(fname))
+					on_dir(
+						util.root_pattern(
+							"*.slnx",
+							"*.sln",
+							"*.csproj",
+							"*.fsproj",
+							"*.vbproj",
+							"omnisharp.json",
+							"function.json"
+						)(fname)
+					)
 				end,
 				enable_roslyn_analyzers = true,
 				organize_imports_on_format = true,

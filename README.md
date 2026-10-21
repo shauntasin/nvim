@@ -2,6 +2,8 @@
 
 Personal Neovim configuration built on LazyVim with a focused, minimal setup.
 
+Android / DroneControl workflows and review shortcuts: [ANDROID.md](ANDROID.md).
+
 ## PDFs
 
 Open `nvim file.pdf`, select a PDF in the explorer, or use `:PdfText path/to/file.pdf`.

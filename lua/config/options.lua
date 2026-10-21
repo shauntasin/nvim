@@ -27,6 +27,8 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 vim.opt.termguicolors = true
+vim.opt.winborder = "rounded"
+vim.opt.cursorline = true
 
 vim.opt.scrolloff = 13
 vim.opt.sidescrolloff = 8

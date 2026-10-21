@@ -2,7 +2,7 @@ return {
 	{
 		"LazyVim/LazyVim",
 		opts = {
-			colorscheme = "modus_operandi",
+			colorscheme = "cyberdream",
 		},
 	},
 	{
@@ -34,9 +34,10 @@ return {
 	{ "rebelot/kanagawa.nvim", lazy = true },
 	{ "rose-pine/neovim", lazy = true },
 	{ "scottmckendry/cyberdream.nvim", lazy = true },
-	{ "EdenEast/nightfox.nvim", lazy = true },
+	{ "edeneast/nightfox.nvim", lazy = true },
 	{ "projekt0n/github-nvim-theme", name = "github-theme", lazy = true },
 	{ "sainnhe/everforest", lazy = true },
+	{ "alexesba/matrix-pro.nvim", lazy = true, name = "matrix-pro" },
 	{
 		"navarasu/onedark.nvim",
 		lazy = true,

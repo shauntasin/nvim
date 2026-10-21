@@ -23,19 +23,50 @@ return {
 
 			opts.dashboard = opts.dashboard or {}
 			opts.dashboard.preset = opts.dashboard.preset or {}
+			local android = require("config.android").root()
+			local function framed(text)
+				local padding = 54 - vim.fn.strdisplaywidth(text)
+				return "│"
+					.. string.rep(" ", math.floor(padding / 2))
+					.. text
+					.. string.rep(" ", math.ceil(padding / 2))
+					.. "│"
+			end
 			opts.dashboard.preset.header = table.concat({
-				"============================================================",
-				"                         SYSTEM INFO                         ",
-				"============================================================",
+				"╭──────────────────────────────────────────────────────╮",
+				framed("N E O V I M"),
+				"╰──────────────────────────────────────────────────────╯",
 				"",
-				"Host      : " .. hostname,
-				"System    : " .. uname.sysname .. " / " .. uname.machine,
-				"Release   : " .. uname.release,
-				"Project   : " .. cwd,
+				android and "DRONECONTROL   ·   ANDROID / JAVA / XML / JNI" or ("WORKSPACE   ·   " .. cwd),
 			}, "\n")
+			opts.dashboard.width = 62
+			opts.dashboard.sections = {
+				{ section = "header", padding = 1 },
+				{ section = "keys", gap = 0, padding = 1 },
+				{
+					text = hostname .. "  ·  " .. uname.sysname .. " / " .. uname.machine .. "  ·  " .. uname.release,
+					align = "center",
+					hl = "Comment",
+				},
+				{ text = "Tools: " .. collect_tools(), align = "center", hl = "Comment", padding = 1 },
+				{ section = "startup" },
+			}
 
 			local keys = opts.dashboard.preset.keys or {}
-			vim.list_extend(keys, {})
+			if android then
+				table.insert(keys, 1, { icon = " ", key = "a", desc = "Android workspace", action = ":Android" })
+				table.insert(keys, 2, {
+					icon = " ",
+					key = "d",
+					desc = "Review working changes",
+					action = ":DiffviewOpen -C=" .. vim.fn.fnameescape(android),
+				})
+				table.insert(
+					keys,
+					3,
+					{ icon = " ", key = "i", desc = "Android lint findings", action = ":AndroidLintResults" }
+				)
+			end
 			opts.dashboard.preset.keys = keys
 		end,
 	},

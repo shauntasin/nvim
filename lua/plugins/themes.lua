@@ -1,4 +1,23 @@
 local themes = {
+	{
+		name = "matrix-pro",
+		background = "dark",
+		before = function()
+			require("lazy").load({ plugins = { "matrix-pro" } })
+		end,
+	},
+	{
+		name = "matrix-pro-light",
+		background = "light",
+		before = function()
+			require("lazy").load({ plugins = { "matrix-pro" } })
+			-- matrix-pro uses background=light for its day variant
+			vim.o.background = "light"
+			vim.cmd.colorscheme("matrix-pro")
+		end,
+	},
+	{ name = "github_dark_high_contrast", background = "dark" },
+	{ name = "catppuccin-mocha", background = "dark" },
 	{ name = "catppuccin", background = "light" },
 	{ name = "catppuccin-latte", background = "light" },
 	{ name = "tokyonight-night", background = "dark" },
