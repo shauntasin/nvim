@@ -54,6 +54,13 @@ local themes = {
 			require("onedark").setup({ style = "light" })
 		end,
 	},
+	{
+		name = "pokemon-emerald",
+		background = "light",
+		before = function()
+			require("lazy").load({ plugins = { "pokemon-emerald" } })
+		end,
+	},
 }
 
 local function theme_name(theme)

@@ -2,7 +2,7 @@ return {
 	{
 		"LazyVim/LazyVim",
 		opts = {
-			colorscheme = "cyberdream",
+			colorscheme = "pokemon-emerald",
 		},
 	},
 	{
@@ -38,6 +38,7 @@ return {
 	{ "projekt0n/github-nvim-theme", name = "github-theme", lazy = true },
 	{ "sainnhe/everforest", lazy = true },
 	{ "alexesba/matrix-pro.nvim", lazy = true, name = "matrix-pro" },
+	{ dir = "~/.config/nvim/local-plugins/pokemon-emerald.nvim", name = "pokemon-emerald", lazy = true },
 	{
 		"navarasu/onedark.nvim",
 		lazy = true,

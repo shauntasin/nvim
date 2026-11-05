@@ -34,7 +34,7 @@ return {
 			end
 			opts.dashboard.preset.header = table.concat({
 				"╭──────────────────────────────────────────────────────╮",
-				framed("N E O V I M"),
+				framed("MAGNET"),
 				"╰──────────────────────────────────────────────────────╯",
 				"",
 				android and "DRONECONTROL   ·   ANDROID / JAVA / XML / JNI" or ("WORKSPACE   ·   " .. cwd),
